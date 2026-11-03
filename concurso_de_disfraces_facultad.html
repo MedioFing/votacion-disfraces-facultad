@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concurso de Disfraces - Facultad</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        },
+                        spooky: {
+                            purple: '#6b21a8',
+                            orange: '#f97316',
+                            dark: '#0f172a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-heading {
+            background: linear-gradient(135deg, #f97316 0%, #a855f7 50%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans antialiased bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-black">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 border-b border-slate-800/80 glass-card bg-slate-900/90 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-orange-500 via-purple-600 to-indigo-600 flex items-center justify-center text-white text-2xl shadow-lg shadow-purple-500/20">
+                    <i class="fa-solid fa-ghost"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                        DisfrazFest <span class="text-xs px-2 py-0.5 rounded-full bg-orange-500/20 text-orange-400 font-medium border border-orange-500/30">Edición Facultad</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Votaciones Universitarias Oficiales</p>
+                </div>
+            </div>
+
+            <!-- Menú de navegación -->
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-300">
+                <a href="#galeria" class="hover:text-orange-400 transition-colors flex items-center gap-1.5">
+                    <i class="fa-solid fa-grid-2 text-xs"></i> Galería
+                </a>
+                <a href="#ranking" class="hover:text-orange-400 transition-colors flex items-center gap-1.5">
+                    <i class="fa-solid fa-trophy text-xs"></i> Ranking
+                </a>
+                <a href="#subir" class="hover:text-orange-400 transition-colors flex items-center gap-1.5">
+                    <i class="fa-solid fa-cloud-arrow-up text-xs"></i> Participar
+                </a>
+            </nav>
+
+            <a href="#subir" class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 text-white font-semibold text-sm transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-orange-500/25">
+                <i class="fa-solid fa-plus-circle mr-2"></i> Subir Disfraz
+            </a>
+        </div>
+    </header>
+
+    <!-- Banner Principal / Hero -->
+    <section class="relative py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+        <div class="absolute top-1/3 left-1/4 w-64 h-64 bg-orange-500/15 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+
+        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-800/80 border border-slate-700/80 text-slate-300 text-xs font-medium mb-6 backdrop-blur-md">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            Votaciones Abiertas - ¡Apoya a tus compañeros!
+        </span>
+
+        <h2 class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-tight max-w-4xl mx-auto mb-6">
+            Elige el mejor disfraz de la <span class="gradient-heading">Facultad</span>
+        </h2>
+        
+        <p class="text-lg text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+            Sube la foto de tu disfraz o explora la galería para votar por tus participantes preferidos. ¡Solo puedes dar 1 voto por cada disfraz!
+        </p>
+
+        <!-- Contador Global / Estadísticas rápidas -->
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-2xl mx-auto bg-slate-800/40 p-4 rounded-2xl border border-slate-700/50 backdrop-blur-sm">
+            <div class="p-3 text-center">
+                <div id="stat-total-votos" class="text-2xl sm:text-3xl font-extrabold text-orange-400">0</div>
+                <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold mt-1">Votos Emitidos</div>
+            </div>
+            <div class="p-3 text-center border-l border-slate-700/50">
+                <div id="stat-total-disfraces" class="text-2xl sm:text-3xl font-extrabold text-purple-400">0</div>
+                <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold mt-1">Concursantes</div>
+            </div>
+            <div class="p-3 text-center border-l border-slate-700/50 col-span-2 md:col-span-1">
+                <div id="stat-top-carrera" class="text-lg font-bold text-emerald-400 truncate px-1">---</div>
+                <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold mt-1">Carrera Líder</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galería con Filtros -->
+    <section id="galeria" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-slate-800">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <div>
+                <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-masks-theater text-orange-500"></i> Galería de Disfraces
+                </h3>
+                <p class="text-sm text-slate-400 mt-1">Explora los atuendos más creativos de los estudiantes</p>
+            </div>
+
+            <!-- Filtro de Carreras & Buscador -->
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="input-buscar" placeholder="Buscar por disfraz o nombre..." 
+                           class="bg-slate-800/80 border border-slate-700 rounded-xl pl-10 pr-4 py-2 text-sm text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 w-full sm:w-64">
+                </div>
+                <select id="select-filtro-carrera" class="bg-slate-800/80 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 cursor-pointer">
+                    <option value="todos">Todas las Carreras</option>
+                    <option value="Sistemas / Informática">Sistemas / Informática</option>
+                    <option value="Diseño / Arte">Diseño / Arte</option>
+                    <option value="Derecho">Derecho</option>
+                    <option value="Medicina / Salud">Medicina / Salud</option>
+                    <option value="Administración / Negocios">Administración / Negocios</option>
+                    <option value="Ingeniería Civil / Industrial">Ingeniería Civil / Industrial</option>
+                    <option value="Otra Carrera">Otra Carrera</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Grid de Tarjetas de Disfraces -->
+        <div id="grid-disfraces" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Renderizado dinámico vía JS -->
+        </div>
+
+        <!-- Estado vacío si no se encuentran disfraces -->
+        <div id="empty-state" class="hidden text-center py-16 bg-slate-800/20 rounded-2xl border border-dashed border-slate-700 my-6">
+            <i class="fa-solid fa-ghost text-5xl text-slate-600 mb-4"></i>
+            <h4 class="text-lg font-semibold text-slate-300">No se encontraron disfraces</h4>
+            <p class="text-sm text-slate-500 mt-1">Intenta cambiar los filtros o sube el primer disfraz de esta categoría.</p>
+        </div>
+    </section>
+
+    <!-- Sección del Ranking / Tabla de Posiciones -->
+    <section id="ranking" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-slate-800">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <span class="text-xs font-bold uppercase tracking-wider text-orange-400 bg-orange-500/10 px-3 py-1 rounded-full border border-orange-500/20">
+                En Tiempo Real
+            </span>
+            <h3 class="text-3xl font-bold text-white mt-3">Tabla de Posiciones</h3>
+            <p class="text-sm text-slate-400 mt-2">Descubre cuáles son los disfraces más votados en este momento</p>
+        </div>
+
+        <!-- Podio Top 3 Visual (Desktop & Tablet) -->
+        <div id="podium-container" class="grid grid-cols-3 gap-4 max-w-3xl mx-auto mb-10 items-end min-h-[220px]">
+            <!-- Renderizado dinámico Top 3 -->
+        </div>
+
+        <!-- Tabla Completa de Posiciones -->
+        <div class="bg-slate-800/40 rounded-2xl border border-slate-700/60 overflow-hidden shadow-xl backdrop-blur-sm max-w-4xl mx-auto">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-slate-300">
+                    <thead class="bg-slate-800/80 text-xs text-slate-400 uppercase tracking-wider border-b border-slate-700/60">
+                        <tr>
+                            <th scope="col" class="px-6 py-4">Puesto</th>
+                            <th scope="col" class="px-6 py-4">Disfraz & Participante</th>
+                            <th scope="col" class="px-6 py-4 hidden sm:table-cell">Carrera</th>
+                            <th scope="col" class="px-6 py-4 text-right">Votos</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-ranking-body" class="divide-y divide-slate-700/40">
+                        <!-- Renderizado dinámico -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Formulario para Subir Nuevo Disfraz -->
+    <section id="subir" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-slate-800">
+        <div class="bg-slate-800/50 rounded-3xl border border-slate-700/70 p-6 sm:p-10 shadow-2xl relative overflow-hidden backdrop-blur-md">
+            <div class="absolute -top-12 -right-12 w-40 h-40 bg-orange-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+            <div class="mb-8">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-semibold mb-2">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Formulario de Inscripción
+                </div>
+                <h3 class="text-2xl sm:text-3xl font-bold text-white">Publica tu Disfraz</h3>
+                <p class="text-sm text-slate-400 mt-1">Completa los campos para aparecer en la galería y recibir votos.</p>
+            </div>
+
+            <form id="form-subir-disfraz" class="space-y-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- Nombre Participante -->
+                    <div>
+                        <label for="input-nombre" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                            Tu Nombre / Equipo *
+                        </label>
+                        <input type="text" id="input-nombre" required placeholder="Ej. Camila Torres" 
+                               class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all">
+                    </div>
+
+                    <!-- Nombre del Disfraz -->
+                    <div>
+                        <label for="input-disfraz" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                            Nombre del Disfraz *
+                        </label>
+                        <input type="text" id="input-disfraz" required placeholder="Ej. Cyberpunk Spiderman" 
+                               class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- Carrera / Facultad -->
+                    <div>
+                        <label for="select-carrera-form" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                            Carrera / Facultad *
+                        </label>
+                        <select id="select-carrera-form" required class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all cursor-pointer">
+                            <option value="" disabled selected>Selecciona una opción</option>
+                            <option value="Sistemas / Informática">Sistemas / Informática</option>
+                            <option value="Diseño / Arte">Diseño / Arte</option>
+                            <option value="Derecho">Derecho</option>
+                            <option value="Medicina / Salud">Medicina / Salud</option>
+                            <option value="Administración / Negocios">Administración / Negocios</option>
+                            <option value="Ingeniería Civil / Industrial">Ingeniería Civil / Industrial</option>
+                            <option value="Otra Carrera">Otra Carrera</option>
+                        </select>
+                    </div>
+
+                    <!-- URL / Archivo de Foto -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                            Foto del Disfraz *
+                        </label>
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <label class="cursor-pointer bg-slate-900/80 hover:bg-slate-800 border border-slate-700 text-slate-300 px-4 py-3 rounded-xl text-sm font-medium flex items-center justify-center gap-2 border-dashed transition-all flex-1">
+                                <i class="fa-solid fa-camera text-slate-400"></i>
+                                <span id="label-file-text">Seleccionar Archivo</span>
+                                <input type="file" id="input-foto-file" accept="image/*" class="hidden">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview de Imagen -->
+                <div id="preview-container" class="hidden">
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Previsualización de Imagen</label>
+                    <div class="relative w-32 h-32 rounded-2xl overflow-hidden border border-slate-700 bg-slate-900">
+                        <img id="img-preview" src="" alt="Vista previa" class="w-full h-full object-cover">
+                        <button type="button" id="btn-remove-img" class="absolute top-1 right-1 bg-red-600/80 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-700">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Descripción breve -->
+                <div>
+                    <label for="input-descripcion" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                        Descripción o Inspiración (Opcional)
+                    </label>
+                    <textarea id="input-descripcion" rows="3" placeholder="Cuenta brevemente los detalles o la historia de tu disfraz..." 
+                              class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all resize-none"></textarea>
+                </div>
+
+                <!-- Botón Submit -->
+                <div class="pt-2">
+                    <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-orange-500 via-purple-600 to-indigo-600 hover:from-orange-600 hover:to-indigo-700 text-white font-bold text-base shadow-xl shadow-purple-600/20 transition-all transform hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> Publicar en el Concurso
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-950 py-8 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>© 2026 Concurso de Disfraces de Facultad. Creado para la comunidad universitaria.</p>
+            <p class="mt-2 text-slate-600">Almacenamiento en vivo integrado vía Web Local Storage.</p>
+        </div>
+    </footer>
+
+    <!-- Notificación Flotante / Toast Custom -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div id="toast-content" class="bg-slate-800 text-white border border-slate-700 px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3">
+            <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+            <span id="toast-message" class="text-sm font-medium">Acción completada con éxito</span>
+        </div>
+    </div>
+
+    <!-- Script de Funcionalidad e Interacción -->
+    <script>
+        // --- DATOS INICIALES DE EJEMPLO ---
+        const disfracesIniciales = [
+            {
+                id: "d1",
+                nombre: "Mateo Rodríguez",
+                disfraz: "Guts - Berserk",
+                carrera: "Sistemas / Informática",
+                foto: "https://images.unsplash.com/photo-1509281373149-e957c6296406?auto=format&fit=crop&w=800&q=80",
+                descripcion: "Armadura completa hecha a mano con goma EVA y espada Dragon Slayer.",
+                votos: 42
+            },
+            {
+                id: "d2",
+                nombre: "Sofía & Andrés",
+                disfraz: "Mario y Luigi Zombie",
+                carrera: "Diseño / Arte",
+                foto: "https://images.unsplash.com/photo-1572949645841-094f3a9c4c94?auto=format&fit=crop&w=800&q=80",
+                descripcion: "MaquillajeFX realizado por nosotros mismos durante 4 horas.",
+                votos: 58
+            },
+            {
+                id: "d3",
+                nombre: "Valeria Gómez",
+                disfraz: "Catrina Neón",
+                carrera: "Derecho",
+                foto: "https://images.unsplash.com/photo-1508847154043-be5407fcaa5a?auto=format&fit=crop&w=800&q=80",
+                descripcion: "Catrina tradicional estilizada con luces led reactivas a la música.",
+                votos: 35
+            },
+            {
+                id: "d4",
+                nombre: "Lucas Silva",
+                disfraz: "Plague Doctor",
+                carrera: "Medicina / Salud",
+                foto: "https://images.unsplash.com/photo-1514533450685-4493e01d1fdc?auto=format&fit=crop&w=800&q=80",
+                descripcion: "Médico de la peste negra con accesorios de cuero y farol funcional.",
+                votos: 27
+            }
+        ];
+
+        // --- ESTADO DE LA APLICACIÓN ---
+        let disfraces = [];
+        let misVotos = []; // Guarda los IDs de los disfraces votados por este usuario
+        let imageBase64Temp = null;
+
+        // --- INICIALIZACIÓN ---
+        window.addEventListener('DOMContentLoaded', () => {
+            cargarEstado();
+            inicializarEventListeners();
+            renderizarTodo();
+        });
+
+        // Cargar datos desde localStorage o cargar iniciales
+        function cargarEstado() {
+            const dataGuardada = localStorage.getItem('facultad_disfraces_data');
+            if (dataGuardada) {
+                try {
+                    disfraces = JSON.parse(dataGuardada);
+                } catch (e) {
+                    disfraces = disfracesIniciales;
+                }
+            } else {
+                disfraces = disfracesIniciales;
+                guardarEstado();
+            }
+
+            const votosGuardados = localStorage.getItem('facultad_mis_votos');
+            if (votosGuardados) {
+                try {
+                    misVotos = JSON.parse(votosGuardados);
+                } catch (e) {
+                    misVotos = [];
+                }
+            }
+        }
+
+        // Guardar cambios en localStorage
+        function guardarEstado() {
+            localStorage.setItem('facultad_disfraces_data', JSON.stringify(disfraces));
+            localStorage.setItem('facultad_mis_votos', JSON.stringify(misVotos));
+        }
+
+        // Configurar Event Listeners
+        function inicializarEventListeners() {
+            // Buscador y Filtro
+            document.getElementById('input-buscar').addEventListener('input', renderizarGaleria);
+            document.getElementById('select-filtro-carrera').addEventListener('change', renderizarGaleria);
+
+            // Subida de Archivo
+            const inputFotoFile = document.getElementById('input-foto-file');
+            inputFotoFile.addEventListener('change', manejarSeleccionFoto);
+
+            document.getElementById('btn-remove-img').addEventListener('click', () => {
+                imageBase64Temp = null;
+                document.getElementById('input-foto-file').value = '';
+                document.getElementById('label-file-text').innerText = 'Seleccionar Archivo';
+                document.getElementById('preview-container').classList.add('hidden');
+            });
+
+            // Submit Formulario
+            document.getElementById('form-subir-disfraz').addEventListener('submit', manejarNuevoDisfraz);
+        }
+
+        // Renderizar todos los componentes
+        function renderizarTodo() {
+            renderizarEstadisticas();
+            renderizarGaleria();
+            renderizarRanking();
+        }
+
+        // Renderizar Estadísticas del Banner
+        function renderizarEstadisticas() {
+            const totalVotos = disfraces.reduce((acc, curr) => acc + curr.votos, 0);
+            document.getElementById('stat-total-votos').innerText = totalVotos;
+            document.getElementById('stat-total-disfraces').innerText = disfraces.length;
+
+            // Calcular carrera con más votos combinados
+            const carreraVotos = {};
+            disfraces.forEach(d => {
+                carreraVotos[d.carrera] = (carreraVotos[d.carrera] || 0) + d.votos;
+            });
+
+            let topCarrera = 'N/A';
+            let maxVotos = -1;
+            for (const [carrera, votos] of Object.entries(carreraVotos)) {
+                if (votos > maxVotos) {
+                    maxVotos = votos;
+                    topCarrera = carrera;
+                }
+            }
+            document.getElementById('stat-top-carrera').innerText = topCarrera;
+        }
+
+        // Renderizar Tarjetas en la Galería
+        function renderizarGaleria() {
+            const gridContainer = document.getElementById('grid-disfraces');
+            const emptyState = document.getElementById('empty-state');
+            const busqueda = document.getElementById('input-buscar').value.toLowerCase().trim();
+            const filtroCarrera = document.getElementById('select-filtro-carrera').value;
+
+            // Filtrar disfraces
+            const filtrados = disfraces.filter(item => {
+                const coincideCarrera = filtroCarrera === 'todos' || item.carrera === filtroCarrera;
+                const coincideBusqueda = item.disfraz.toLowerCase().includes(busqueda) || 
+                                         item.nombre.toLowerCase().includes(busqueda) ||
+                                         item.carrera.toLowerCase().includes(busqueda);
+                return coincideCarrera && coincideBusqueda;
+            });
+
+            if (filtrados.length === 0) {
+                gridContainer.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            // Orden de posiciones globales para mostrar medalla si aplica
+            const ordenadosPorVotos = [...disfraces].sort((a, b) => b.votos - a.votos);
+
+            gridContainer.innerHTML = filtrados.map(item => {
+                const yaVoto = misVotos.includes(item.id);
+                const posicionGlobal = ordenadosPorVotos.findIndex(d => d.id === item.id) + 1;
+
+                let insigniaPuesto = '';
+                if (posicionGlobal === 1) insigniaPuesto = '<span class="bg-amber-500/90 text-black font-bold px-2.5 py-1 rounded-full text-xs shadow-lg"><i class="fa-solid fa-crown mr-1"></i> #1 Líder</span>';
+                else if (posicionGlobal === 2) insigniaPuesto = '<span class="bg-slate-300/90 text-black font-bold px-2.5 py-1 rounded-full text-xs shadow-lg">#2 Puesto</span>';
+                else if (posicionGlobal === 3) insigniaPuesto = '<span class="bg-amber-700/90 text-white font-bold px-2.5 py-1 rounded-full text-xs shadow-lg">#3 Puesto</span>';
+
+                return `
+                    <div class="bg-slate-800/60 rounded-2xl overflow-hidden border border-slate-700/70 hover:border-slate-500 transition-all duration-300 flex flex-col group shadow-lg">
+                        <!-- Foto del Disfraz -->
+                        <div class="relative h-64 overflow-hidden bg-slate-900">
+                            <img src="${item.foto}" 
+                                 alt="${item.disfraz}" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/600x600/1e293b/ffffff?text=Foto+No+Disponible';">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div>
+                            
+                            <!-- Badges en Foto -->
+                            <div class="absolute top-3 left-3 flex flex-col gap-1.5 items-start">
+                                ${insigniaPuesto}
+                            </div>
+
+                            <span class="absolute bottom-3 left-3 bg-slate-900/80 backdrop-blur-md text-purple-300 border border-purple-500/30 text-xs font-semibold px-2.5 py-1 rounded-lg">
+                                <i class="fa-solid fa-graduation-cap mr-1"></i> ${item.carrera}
+                            </span>
+                        </div>
+
+                        <!-- Detalles -->
+                        <div class="p-5 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h4 class="text-lg font-bold text-white group-hover:text-orange-400 transition-colors line-clamp-1">${item.disfraz}</h4>
+                                <p class="text-xs font-medium text-slate-400 mt-0.5">Por: <span class="text-slate-200">${item.nombre}</span></p>
+                                
+                                ${item.descripcion ? `<p class="text-xs text-slate-400 mt-3 line-clamp-2 italic">"${item.descripcion}"</p>` : ''}
+                            </div>
+
+                            <!-- Botón de Votar y Contador -->
+                            <div class="mt-5 pt-4 border-t border-slate-700/50 flex items-center justify-between">
+                                <div class="flex items-center gap-1.5 text-slate-200 font-bold text-lg">
+                                    <i class="fa-solid fa-heart text-rose-500"></i>
+                                    <span>${item.votos}</span>
+                                    <span class="text-xs font-normal text-slate-400">votos</span>
+                                </div>
+
+                                <button onclick="votarDisfraz('${item.id}')" 
+                                        class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-md ${
+                                            yaVoto 
+                                            ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 cursor-default' 
+                                            : 'bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 text-white transform active:scale-95 hover:shadow-orange-500/20'
+                                        }">
+                                    <i class="fa-solid ${yaVoto ? 'fa-check-circle' : 'fa-thumbs-up'}"></i>
+                                    ${yaVoto ? '¡Votado!' : 'Votar'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Renderizar Podio & Tabla de Posiciones
+        function renderizarRanking() {
+            const rankingOrdenado = [...disfraces].sort((a, b) => b.votos - a.votos);
+            const podiumContainer = document.getElementById('podium-container');
+            const tablaBody = document.getElementById('tabla-ranking-body');
+
+            // Renderizar Podio Top 3
+            if (rankingOrdenado.length >= 1) {
+                const top1 = rankingOrdenado[0];
+                const top2 = rankingOrdenado[1];
+                const top3 = rankingOrdenado[2];
+
+                podiumContainer.innerHTML = `
+                    <!-- Puesto 2 -->
+                    ${top2 ? `
+                    <div class="flex flex-col items-center">
+                        <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-slate-300 overflow-hidden shadow-lg mb-2 bg-slate-800">
+                            <img src="${top2.foto}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xs font-bold text-slate-200 truncate max-w-[90px] sm:max-w-[120px]">${top2.disfraz}</div>
+                            <div class="text-[10px] text-slate-400">${top2.votos} votos</div>
+                        </div>
+                        <div class="w-full bg-slate-700/80 rounded-t-xl h-24 mt-2 flex items-center justify-center border-t-2 border-slate-400">
+                            <span class="text-xl font-extrabold text-slate-300">2º</span>
+                        </div>
+                    </div>` : '<div></div>'}
+
+                    <!-- Puesto 1 (Líder) -->
+                    <div class="flex flex-col items-center">
+                        <i class="fa-solid fa-crown text-amber-400 text-2xl mb-1 animate-bounce"></i>
+                        <div class="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-amber-400 overflow-hidden shadow-xl shadow-amber-500/20 mb-2 bg-slate-800">
+                            <img src="${top1.foto}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="text-center">
+                            <div class="text-sm font-bold text-white truncate max-w-[100px] sm:max-w-[140px]">${top1.disfraz}</div>
+                            <div class="text-xs font-semibold text-amber-400">${top1.votos} votos</div>
+                        </div>
+                        <div class="w-full bg-gradient-to-t from-amber-600/30 to-amber-500/20 rounded-t-xl h-32 mt-2 flex items-center justify-center border-t-4 border-amber-400">
+                            <span class="text-3xl font-black text-amber-400">1º</span>
+                        </div>
+                    </div>
+
+                    <!-- Puesto 3 -->
+                    ${top3 ? `
+                    <div class="flex flex-col items-center">
+                        <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-amber-700 overflow-hidden shadow-lg mb-2 bg-slate-800">
+                            <img src="${top3.foto}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xs font-bold text-slate-200 truncate max-w-[90px] sm:max-w-[120px]">${top3.disfraz}</div>
+                            <div class="text-[10px] text-slate-400">${top3.votos} votos</div>
+                        </div>
+                        <div class="w-full bg-slate-800 rounded-t-xl h-16 mt-2 flex items-center justify-center border-t-2 border-amber-700">
+                            <span class="text-lg font-extrabold text-amber-600">3º</span>
+                        </div>
+                    </div>` : '<div></div>'}
+                `;
+            }
+
+            // Renderizar Tabla
+            tablaBody.innerHTML = rankingOrdenado.map((item, index) => {
+                let badgeRank = `<span class="font-bold text-slate-400">#${index + 1}</span>`;
+                if (index === 0) badgeRank = `<span class="w-7 h-7 rounded-full bg-amber-400 text-black font-bold flex items-center justify-center text-xs"><i class="fa-solid fa-crown"></i></span>`;
+                if (index === 1) badgeRank = `<span class="w-7 h-7 rounded-full bg-slate-300 text-black font-bold flex items-center justify-center text-xs">2</span>`;
+                if (index === 2) badgeRank = `<span class="w-7 h-7 rounded-full bg-amber-700 text-white font-bold flex items-center justify-center text-xs">3</span>`;
+
+                return `
+                    <tr class="hover:bg-slate-800/50 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            ${badgeRank}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center gap-3">
+                                <img src="${item.foto}" class="w-10 h-10 rounded-xl object-cover border border-slate-700" onerror="this.onerror=null; this.src='https://placehold.co/100x100/1e293b/ffffff?text=X';">
+                                <div>
+                                    <div class="font-bold text-white">${item.disfraz}</div>
+                                    <div class="text-xs text-slate-400">${item.nombre}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell text-xs text-slate-300">
+                            ${item.carrera}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right font-bold text-slate-100">
+                            <span class="text-orange-400">${item.votos}</span> <span class="text-xs text-slate-500 font-normal">votos</span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Lógica de Votación
+        function votarDisfraz(id) {
+            const index = disfraces.findIndex(d => d.id === id);
+            if (index === -1) return;
+
+            if (misVotos.includes(id)) {
+                // Quitar voto si ya había votado
+                disfraces[index].votos -= 1;
+                misVotos = misVotos.filter(item => item !== id);
+                mostrarToast("Has retirado tu voto", "info");
+            } else {
+                // Agregar voto
+                disfraces[index].votos += 1;
+                misVotos.push(id);
+                mostrarToast(`¡Voto registrado para "${disfraces[index].disfraz}"! 🎉`, "exito");
+            }
+
+            guardarEstado();
+            renderizarTodo();
+        }
+
+        // Manejar conversión de la foto local a Base64
+        function manejarSeleccionFoto(e) {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) { // Límite de 5MB
+                    mostrarToast("La imagen es muy pesada (Máximo 5MB)", "error");
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    imageBase64Temp = evt.target.result;
+                    document.getElementById('img-preview').src = imageBase64Temp;
+                    document.getElementById('preview-container').classList.remove('hidden');
+                    document.getElementById('label-file-text').innerText = 'Foto Cargada';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Manejar el envío de nuevo disfraz
+        function manejarNuevoDisfraz(e) {
+            e.preventDefault();
+
+            const nombre = document.getElementById('input-nombre').value.trim();
+            const disfraz = document.getElementById('input-disfraz').value.trim();
+            const carrera = document.getElementById('select-carrera-form').value;
+            const descripcion = document.getElementById('input-descripcion').value.trim();
+
+            if (!imageBase64Temp) {
+                mostrarToast("Por favor selecciona una foto para tu disfraz", "error");
+                return;
+            }
+
+            const nuevoDisfraz = {
+                id: "d_" + Date.now(),
+                nombre: nombre,
+                disfraz: disfraz,
+                carrera: carrera,
+                foto: imageBase64Temp,
+                descripcion: descripcion,
+                votos: 1 // Inicia con 1 voto propio
+            };
+
+            disfraces.unshift(nuevoDisfraz); // Agregar al inicio
+            misVotos.push(nuevoDisfraz.id); // Auto-voto del participante
+            guardarEstado();
+
+            // Limpiar Formulario
+            document.getElementById('form-subir-disfraz').reset();
+            imageBase64Temp = null;
+            document.getElementById('preview-container').classList.add('hidden');
+            document.getElementById('label-file-text').innerText = 'Seleccionar Archivo';
+
+            renderizarTodo();
+            mostrarToast("¡Tu disfraz se ha publicado con éxito!", "exito");
+
+            // Scroll suave hacia la galería
+            document.getElementById('galeria').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Sistema de Mensajes Toast
+        function mostrarToast(mensaje, tipo = "exito") {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastMessage.innerText = mensaje;
+
+            if (tipo === "exito") {
+                toastIcon.className = "fa-solid fa-circle-check text-emerald-400 text-lg";
+            } else if (tipo === "error") {
+                toastIcon.className = "fa-solid fa-circle-xmark text-rose-400 text-lg";
+            } else {
+                toastIcon.className = "fa-solid fa-circle-info text-sky-400 text-lg";
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
