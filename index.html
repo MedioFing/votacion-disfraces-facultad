@@ -33,7 +33,7 @@
         <!-- Banner -->
         <div class="bg-gradient-to-r from-purple-950/50 via-slate-900 to-orange-950/50 border border-purple-500/20 rounded-2xl p-6 shadow-xl">
             <h2 class="text-2xl font-extrabold text-white mb-2">¡Elige al Mejor Disfraz!</h2>
-            <p class="text-slate-300 text-sm">Explora las caracterizaciones de la facultad, vota por tu favorito (solo un voto por persona) y consulta el podio en tiempo real.</p>
+            <p class="text-slate-300 text-sm">Explora las caracterizaciones de la facultad, haz clic en la foto para verla completa, vota por tu favorito (un voto por persona) y consulta el podio en tiempo real.</p>
         </div>
 
         <!-- Podio -->
@@ -54,6 +54,17 @@
         </div>
     </main>
 
+    <!-- Modal para Ampliar Imagen -->
+    <div id="image-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden z-50 flex items-center justify-center p-4" onclick="closeModal()">
+        <div class="relative max-w-4xl w-full flex flex-col items-center" onclick="event.stopPropagation()">
+            <button onclick="closeModal()" class="absolute -top-10 right-0 text-white text-2xl hover:text-orange-500 transition-colors">
+                <i class="fa-solid fa-xmark"></i> Cerrar
+            </button>
+            <img id="modal-img" src="" class="max-h-[85vh] w-auto rounded-xl shadow-2xl object-contain border border-slate-700">
+            <p id="modal-caption" class="text-white font-bold mt-3 text-center text-lg"></p>
+        </div>
+    </div>
+
     <footer class="bg-slate-900 border-t border-slate-800 py-6 text-center text-xs text-slate-500 mt-12">
         Pontificia Universidad Javeriana · Facultad de Ingeniería 2026
     </footer>
@@ -67,7 +78,7 @@
             { id: '5', name: 'Rosa (Conserje)', disguise: 'Alex de Madagascar, León', career: 'Facultad de Ingeniería', description: 'Soy grande y tengo mucho amor para dar', imageUrl: 'Multimedia (8)_Zenaida carlina Cruz.jpg', votes: 0 },
             { id: '6', name: 'Julieta Fernanda Millan Monroy', disguise: 'Maléfica', career: 'Decanatura', description: 'Tras de un disfraz hay un corazón lleno de bondad', imageUrl: 'Multimedia_Andrea Del Pilar Rue.jpeg', votes: 0 },
             { id: '7', name: 'Julieth Vigoya Páez', disguise: 'Bellatrix Lestrange', career: 'Laboratorios de Ingeniería', description: 'Servidora leal del Señor Tenebroso', imageUrl: 'WhatsApp Image 2026-10-30 at 11.20.59 AM_Julieth Vigoya Paez.jpg', votes: 0 },
-            { id: '8', name: 'David Guativa Mahecha', disguise: 'Espantapájaros', career: 'Decanatura', description: 'Espantapájaros de hansel y Gretel', imageUrl: 'IMG_1608_David Stiven Guativa.jpeg', imageUrlFallback: '', votes: 0 },
+            { id: '8', name: 'David Guativa Mahecha', disguise: 'Espantapájaros', career: 'Decanatura', description: 'Espantapájaros de hansel y Gretel', imageUrl: 'IMG_1608_David Stiven Guativa.jpeg', votes: 0 },
             { id: '9', name: 'Laura María González Carvajal', disguise: 'Billy (Saw)', career: 'Doctorado en Ingeniería', description: '¿Quieres jugar un juego? Emisario de Jigsaw', imageUrl: 'Billy SAW_Laura Maria Gonzalez.jpg', votes: 0 },
             { id: '10', name: 'Nathalia Quintero Noreña', disguise: 'Jarl Vikinga', career: 'Departamento de Ingeniería Industrial', description: 'Inspirado en la fuerza de las guerreras nórdicas', imageUrl: 'Disfraz_Nathalia Quintero No.png', votes: 0 },
             { id: '11', name: 'PATRICIA MONROY y Alexandra cely', disguise: 'Inspectora y técnica', career: 'Secretaria', description: 'Investigamos los casos terroríficos de la facultad', imageUrl: 'IMG-20261030-WA0090_Patricia Monroy Sanc.jpg', votes: 0 }
@@ -95,6 +106,16 @@
             }
         }
 
+        function openModal(imgSrc, title) {
+            document.getElementById('modal-img').src = imgSrc;
+            document.getElementById('modal-caption').innerText = title;
+            document.getElementById('image-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('image-modal').classList.add('hidden');
+        }
+
         function render() {
             const total = state.reduce((acc, curr) => acc + curr.votes, 0);
             document.getElementById('total-votes').innerText = total;
@@ -106,7 +127,7 @@
             podiumEl.innerHTML = sorted.slice(0, 3).map((item, idx) => `
                 <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 flex items-center gap-3 relative">
                     <span class="absolute top-2 right-2 text-xs font-bold text-orange-400">${medals[idx]}</span>
-                    <img src="${item.imageUrl}" class="w-14 h-14 rounded-lg object-cover border border-slate-700" onerror="this.src='https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=200'">
+                    <img src="${item.imageUrl}" onclick="openModal('${item.imageUrl}', '${item.disguise} - ${item.name}')" class="w-14 h-14 rounded-lg object-cover border border-slate-700 cursor-pointer hover:opacity-80 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=200'">
                     <div class="min-w-0">
                         <h4 class="font-bold text-sm text-white truncate">${item.disguise}</h4>
                         <p class="text-xs text-slate-400 truncate">${item.name}</p>
@@ -123,8 +144,9 @@
             galleryEl.innerHTML = filtered.map(item => `
                 <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden flex flex-col justify-between shadow-lg">
                     <div>
-                        <div class="h-52 bg-slate-950 overflow-hidden relative">
-                            <img src="${item.imageUrl}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600'">
+                        <div class="h-64 bg-slate-950 overflow-hidden relative group cursor-pointer" onclick="openModal('${item.imageUrl}', '${item.disguise} - ${item.name}')">
+                            <img src="${item.imageUrl}" class="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600'">
+                            <span class="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"><i class="fa-solid fa-magnifying-glass-plus"></i> Ampliar</span>
                             <span class="absolute bottom-2 left-2 bg-slate-900/90 text-xs px-2.5 py-1 rounded-md text-slate-300 border border-slate-700">${item.career}</span>
                         </div>
                         <div class="p-4 space-y-1.5">
