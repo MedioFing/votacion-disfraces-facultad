@@ -1,69 +1,155 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Concurso de Disfraces - Facultad de Ingeniería</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
-                            800: '#166534',
-                            900: '#14532d',
-                        },
-                        spooky: {
-                            purple: '#6b21a8',
-                            orange: '#f97316',
-                            dark: '#0f172a'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Inter', sans-serif; }</style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col selection:bg-spooky-orange selection:text-white">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
 
-    <!-- Header / Banner -->
-    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 backdrop-blur-md bg-opacity-90">
-        <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 p-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="bg-spooky-orange text-slate-950 p-2.5 rounded-xl font-extrabold text-xl shadow-lg shadow-spooky-orange/20">
+                <div class="bg-orange-500 text-slate-950 p-2.5 rounded-xl font-bold text-xl">
                     <i class="fa-solid fa-ghost"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl sm:text-2xl font-black tracking-tight text-white">Concurso de Disfraces 🎃</h1>
-                    <p class="text-xs sm:text-sm text-slate-400">Facultad de Ingeniería · Votación Oficial</p>
+                    <h1 class="text-xl font-black text-white">Concurso de Disfraces 🎃</h1>
+                    <p class="text-xs text-slate-400">Facultad de Ingeniería · Votación Oficial</p>
                 </div>
             </div>
-            <div class="flex items-center gap-4">
-                <div class="bg-slate-800/80 px-4 py-2 rounded-xl border border-slate-700/60 text-center">
-                    <span class="block text-xs text-slate-400 font-medium">Total Votos</span>
-                    <span id="total-votes-counter" class="text-lg font-bold text-spooky-orange">0</span>
-                </div>
+            <div class="bg-slate-800 px-4 py-2 rounded-xl border border-slate-700 text-center">
+                <span class="block text-xs text-slate-400">Total Votos</span>
+                <span id="total-votes" class="text-lg font-bold text-orange-500">0</span>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-8 sm:px-6 space-y-12">
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-8">
+        <!-- Banner -->
+        <div class="bg-gradient-to-r from-purple-950/50 via-slate-900 to-orange-950/50 border border-purple-500/20 rounded-2xl p-6 shadow-xl">
+            <h2 class="text-2xl font-extrabold text-white mb-2">¡Elige al Mejor Disfraz!</h2>
+            <p class="text-slate-300 text-sm">Explora las caracterizaciones de la facultad, vota por tu favorito (solo un voto por persona) y consulta el podio en tiempo real.</p>
+        </div>
 
-        <!-- Info / Instructions Banner -->
-        <section class="bg-gradient-to-r from-purple-950/40 via-slate-900 to-orange-950/40 border border-purple-500/20 rounded-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
-            <div class="absolute -right-10 -bottom-10 text-purple-900/20 text-9xl font-black pointer-events-none">
+        <!-- Podio -->
+        <div class="space-y-4">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-trophy text-yellow-500"></i> Podio en Tiempo Real</h3>
+            <div id="podium-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+        </div>
+
+        <!-- Galería -->
+        <div class="space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-images text-orange-500"></i> Galería de Participantes</h3>
+                <select id="filter-career" class="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-lg px-3 py-1.5">
+                    <option value="all">Todas las dependencias</option>
+                </select>
+            </div>
+            <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </div>
+    </main>
+
+    <footer class="bg-slate-900 border-t border-slate-800 py-6 text-center text-xs text-slate-500 mt-12">
+        Pontificia Universidad Javeriana · Facultad de Ingeniería 2026
+    </footer>
+
+    <script>
+        const participants = [
+            { id: '1', name: 'Isaac Monroy', disguise: 'Dobby', career: 'Laboratorio', description: 'El elfo libre de ingeniería', imageUrl: '1e0ac433-b13a-4ea4-b97a-df1c9e06e150_Isaac Danilo Monroy.jpeg', votes: 0 },
+            { id: '2', name: 'Leonardo romero reyes', disguise: 'Lord Voldemort', career: 'Laboratorio de ingenieria', description: 'El señor tenebroso de Harry Potter capaz de hacer hechizos', imageUrl: 'IMG-20261030-WA0031_Sidney Leonardo Rome.jpg', votes: 0 },
+            { id: '3', name: 'Miguel Andres Vela Avellaneda', disguise: 'Colagusano', career: 'Laboratorios de Ingeniería', description: 'Peter Pettigrew, uno de los 4 merodeadores', imageUrl: 'IMG_7949_Miguel Andres Vela A.jpeg', votes: 0 },
+            { id: '4', name: 'Julio Omar Ancízar Palacio Niño', disguise: 'Espantapájaros', career: 'Ingenieria de sistemas', description: 'Pantalón azul, camisa a cuadros, sombrero de paja', imageUrl: 'WhatsApp Image 2026-10-30 at 3.27.05 PM_Julio Omar Ancizar P.jpeg', votes: 0 },
+            { id: '5', name: 'Rosa (Conserje)', disguise: 'Alex de Madagascar, León', career: 'Facultad de Ingeniería', description: 'Soy grande y tengo mucho amor para dar', imageUrl: 'Multimedia (8)_Zenaida carlina Cruz.jpg', votes: 0 },
+            { id: '6', name: 'Julieta Fernanda Millan Monroy', disguise: 'Maléfica', career: 'Decanatura', description: 'Tras de un disfraz hay un corazón lleno de bondad', imageUrl: 'Multimedia_Andrea Del Pilar Rue.jpeg', votes: 0 },
+            { id: '7', name: 'Julieth Vigoya Páez', disguise: 'Bellatrix Lestrange', career: 'Laboratorios de Ingeniería', description: 'Servidora leal del Señor Tenebroso', imageUrl: 'WhatsApp Image 2026-10-30 at 11.20.59 AM_Julieth Vigoya Paez.jpg', votes: 0 },
+            { id: '8', name: 'David Guativa Mahecha', disguise: 'Espantapájaros', career: 'Decanatura', description: 'Espantapájaros de hansel y Gretel', imageUrl: 'IMG_1608_David Stiven Guativa.jpeg', imageUrlFallback: '', votes: 0 },
+            { id: '9', name: 'Laura María González Carvajal', disguise: 'Billy (Saw)', career: 'Doctorado en Ingeniería', description: '¿Quieres jugar un juego? Emisario de Jigsaw', imageUrl: 'Billy SAW_Laura Maria Gonzalez.jpg', votes: 0 },
+            { id: '10', name: 'Nathalia Quintero Noreña', disguise: 'Jarl Vikinga', career: 'Departamento de Ingeniería Industrial', description: 'Inspirado en la fuerza de las guerreras nórdicas', imageUrl: 'Disfraz_Nathalia Quintero No.png', votes: 0 },
+            { id: '11', name: 'PATRICIA MONROY y Alexandra cely', disguise: 'Inspectora y técnica', career: 'Secretaria', description: 'Investigamos los casos terroríficos de la facultad', imageUrl: 'IMG-20261030-WA0090_Patricia Monroy Sanc.jpg', votes: 0 }
+        ];
+
+        let state = JSON.parse(localStorage.getItem('facultad_disfraces_v2')) || participants;
+        let hasVoted = localStorage.getItem('facultad_voto_global') === 'true';
+
+        function saveData() {
+            localStorage.setItem('facultad_disfraces_v2', JSON.stringify(state));
+            localStorage.setItem('facultad_voto_global', hasVoted);
+        }
+
+        function vote(id) {
+            if (hasVoted) {
+                alert('¡Ya has registrado tu voto anteriormente!');
+                return;
+            }
+            const item = state.find(p => p.id === id);
+            if (item) {
+                item.votes += 1;
+                hasVoted = true;
+                saveData();
+                render();
+            }
+        }
+
+        function render() {
+            const total = state.reduce((acc, curr) => acc + curr.votes, 0);
+            document.getElementById('total-votes').innerText = total;
+
+            // Podio
+            const sorted = [...state].sort((a, b) => b.votes - a.votes);
+            const podiumEl = document.getElementById('podium-grid');
+            const medals = ['🥇 1er Lugar', '🥈 2do Lugar', '🥉 3er Lugar'];
+            podiumEl.innerHTML = sorted.slice(0, 3).map((item, idx) => `
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 flex items-center gap-3 relative">
+                    <span class="absolute top-2 right-2 text-xs font-bold text-orange-400">${medals[idx]}</span>
+                    <img src="${item.imageUrl}" class="w-14 h-14 rounded-lg object-cover border border-slate-700" onerror="this.src='https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=200'">
+                    <div class="min-w-0">
+                        <h4 class="font-bold text-sm text-white truncate">${item.disguise}</h4>
+                        <p class="text-xs text-slate-400 truncate">${item.name}</p>
+                        <p class="text-xs font-semibold text-orange-500 mt-1">🔥 ${item.votes} votos</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Galería
+            const filter = document.getElementById('filter-career').value;
+            const galleryEl = document.getElementById('gallery-grid');
+            const filtered = filter === 'all' ? state : state.filter(p => p.career === filter);
+
+            galleryEl.innerHTML = filtered.map(item => `
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden flex flex-col justify-between shadow-lg">
+                    <div>
+                        <div class="h-52 bg-slate-950 overflow-hidden relative">
+                            <img src="${item.imageUrl}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600'">
+                            <span class="absolute bottom-2 left-2 bg-slate-900/90 text-xs px-2.5 py-1 rounded-md text-slate-300 border border-slate-700">${item.career}</span>
+                        </div>
+                        <div class="p-4 space-y-1.5">
+                            <h4 class="font-bold text-white text-base">${item.disguise}</h4>
+                            <p class="text-xs text-orange-400 font-medium"><i class="fa-solid fa-user"></i> ${item.name}</p>
+                            <p class="text-xs text-slate-400 line-clamp-2">${item.description}</p>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0 flex items-center justify-between border-t border-slate-800/60 mt-2">
+                        <span class="text-sm font-bold text-white"><i class="fa-solid fa-heart text-red-500"></i> ${item.votes} votos</span>
+                        <button onclick="vote('${item.id}')" ${hasVoted ? 'disabled' : ''} class="px-4 py-2 rounded-xl text-xs font-bold transition-all ${hasVoted ? 'bg-slate-800 text-slate-500 cursor-not-allowed' : 'bg-orange-500 hover:bg-orange-600 text-slate-950 cursor-pointer shadow-md'}">
+                            ${hasVoted ? 'Ya votaste' : 'Votar 🎃'}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Poblar filtro
+        const select = document.getElementById('filter-career');
+        const careers = [...new Set(participants.map(p => p.career))];
+        select.innerHTML += careers.map(c => `<option value="${c}">${c}</option>`).join('');
+        select.addEventListener('change', render);
+
+        render();
+    </script>
+</body>
+</html>
